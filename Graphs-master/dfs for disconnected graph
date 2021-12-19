@@ -1,0 +1,47 @@
+#include <bits/stdc++.h>
+using namespace std;
+void printdfs(int **edges,int v,int sv,bool *visited){
+    cout<<sv<<" ";
+    visited[sv]=true;
+    for (int i=0;i<v;i++){
+        if (i==sv)continue;
+        if (edges[sv][i]==1){
+            if (visited[i])continue;
+            printdfs(edges,v,i,visited);
+        }
+    }
+}
+
+void dfs (int **edges, int v){
+    bool*visited = new bool[v];
+    for (int i=0;i<v;i++){
+        visited [i]= false;
+    }
+    for (int i=0;i<v;i++){
+        if (!visited[i]){
+            printdfs(edges,v,i,visited);
+        }
+    }
+    delete []visited;
+}
+int main() {
+int v,e;cin>>v>>e;
+int **edges = new int*[v];
+for (int i=0;i<v;i++){
+    edges[i]=new int [v];
+    for (int j=0;j<v;j++){
+        edges[i][j]=0;
+    }
+}
+for (int i=0;i<e;i++){
+int sn,en;cin>>sn>>en;
+edges[sn][en]=1;
+edges[en][sn]=1;
+}
+bool *visited= new bool [v];
+for (int i=0;i<v;i++){
+    visited[i]=0;
+}
+dfs (edges,v);
+//	return 0;
+}

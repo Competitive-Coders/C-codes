@@ -1,0 +1,59 @@
+#include<iostream>
+#include<list>
+using namespace std;
+
+ class graph
+ {
+     int v;
+     list<pair<int,int> >*lists;
+public:
+     graph (int V)
+     {
+     v=V;
+     lists=new list<pair <int,int> >[v];
+
+     }
+
+ void addvertex (int i,int f,int dist,bool bidr=true)
+ {
+     lists[i].push_back(make_pair(f,dist));
+     if (bidr)
+     lists[f].push_back(make_pair(i,dist));
+ }
+ int hlpr (int i,bool *visited,int *counts,int &ans)
+ {
+     visited[i]=true;
+     counts[i]=1;
+     for (auto neighbour:lists[i])
+     {
+         int node=neighbour.first;
+         if (!visited[node]){
+           counts[i]+= hlpr (node,visited,counts,ans);
+           int s=counts[node];
+           int n=v;
+           int edge_wt=neighbour.second;
+         ans+=2* min (s,n-s)*edge_wt;
+         }
+     }
+     return counts[i];
+ }
+ int holi ()
+ {
+     bool*visited=new bool[v]{0};
+     int *counts=new int[v]{0};
+     int ans=0;
+     hlpr (0,visited,counts,ans); 
+     return ans;
+ }
+ };
+ int main() {
+    
+    graph g(4);
+    g.addvertex(0,1,4);
+    g.addvertex(1,2,5);
+    g.addvertex(3,2,6);
+    //g.addEdge(2,4,2);    
+    cout<<g.holi();
+    
+    
+}

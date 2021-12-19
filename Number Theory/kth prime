@@ -1,0 +1,29 @@
+#include <bits/stdc++.h>
+#define ll long long
+using namespace std;
+
+ll prime[9000001];
+int maxN= 9000000;
+vector<int> v;
+void kth_prime (ll n){
+    for (int i=0;i<=maxN;i++)prime[i]=1;
+    prime[0]=0;prime [1]=0;
+    for (ll i=2;i<=maxN;i++){
+        if (prime[i]){
+            for (ll j=i*i;j<=maxN;j+=i){
+                prime [j]=0;
+            }
+        }
+    }
+    for (ll i=2;i<maxN;i++){
+        if (prime[i])
+        v.push_back(i);
+    }
+    cout<<v[n-1];
+}
+
+int main() {
+	ll n;cin>>n;
+	kth_prime (n);
+	return 0;
+}

@@ -1,0 +1,24 @@
+#include <bits/stdc++.h>
+#define ll long long
+using namespace std;
+ll binary_exponentiation(ll base,ll power){
+    ll res=1;
+    while (power){
+    if (power%2!=0){
+        power-=1;
+        res*=base;}
+    else
+    {
+        power/=2;
+        base*=base;
+    }
+    }
+    return res;
+
+}
+int main() {
+    ll power;ll base;
+    cin>>base;cin>>power;
+	cout<<binary_exponentiation(base,power);
+	return 0;
+}

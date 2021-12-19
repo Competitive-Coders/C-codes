@@ -1,0 +1,38 @@
+#include <bits/stdc++.h>
+using namespace std;
+vector <int> arr[100000];
+int intime [100000];//array which stores the tym at whic u enter the node
+int lowtime[100000];//array which stores the lowest ancestor which can reached directly from that node
+int visited[100000];
+int timer=0;
+void dfs (int n,int parent){
+    visited[n]=1;
+    intime[n]=lowtime[n]=timer;
+    timer++;
+    for (int child : arr[n]){
+        //cout<<"sdds";
+        if (child==parent)continue;
+        if (visited[child]==1){
+            lowtime[n]=min (lowtime[n],intime[child]);
+           // cout<<"sdf";
+        }
+        else{
+            dfs(child,n);
+            if (lowtime[child]>intime[n]){
+               // cout<<"sd";
+                cout<<n<<" "<<child<<" bridge"<<endl;
+                lowtime[n]=min(lowtime[n],intime[child]);
+            }
+        }
+    }
+    
+}
+int main() {
+	int nodes,edges,x,y;cin>>nodes>>edges;
+	while (edges--){
+	    cin>>x>>y;
+	    arr[x].push_back(y);
+	    arr[y].push_back(x);
+	    dfs(1,-1);
+	}
+}

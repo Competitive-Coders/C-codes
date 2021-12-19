@@ -1,0 +1,78 @@
+#include<bits/stdc++.h>
+using namespace std;
+template<typename T>
+class graph
+{
+    map <T,list<T> >adjlist;
+    public:
+    graph ()
+    {
+
+    }
+     void addvertex(int i, int f,bool bidr=true)
+    {
+        adjlist[i].push_back(f);
+        if (bidr)
+        adjlist[f].push_back(i);
+    }
+    void print ()
+    {
+        for (T key:adjlist)
+        {
+            cout<<key.first<<" ";
+            for (auto neighbour:key.second)
+            {
+            cout<<neighbour<<" ";
+
+            }
+            cout<<endl;
+        }
+    }
+    bool cycle_detection (T strt)
+    {
+        map <T,bool> visited;
+        map <T,T> parent;
+        queue <T> q;
+        q.push(strt);
+        visited[strt]=true;
+        parent [strt]=strt;
+        
+        while (!q.empty())
+        {
+            T node=q.front();
+            q.pop();
+            
+            
+        for (T neighbour:adjlist[node])
+        {
+            if (visited[neighbour]==true && parent[node]!=neighbour)
+            {
+                return true;
+            }
+            else if (!visited[neighbour])
+            {
+                visited[neighbour]=true;
+                parent [neighbour]=node;
+                q.push(neighbour);
+            }          
+        }
+      }
+      return false;
+    }
+};
+int main ()
+{
+    graph <int> g;
+    g.addvertex(0,1);
+    g.addvertex(1,2);
+    g.addvertex(2,3);
+    g.addvertex(3,0);
+    if (g.cycle_detection(1))
+    {
+        cout<<"cycle is present";
+    }
+    else
+    cout<<"cycle is not present";
+    return 0;
+    
+}

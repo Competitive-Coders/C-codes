@@ -1,0 +1,76 @@
+#include <bits/stdc++.h>
+using namespace std;
+void dfs (vector<int>*edges,int start,unordered_set<int> &visited,stack<int> &finishedvertices){
+    visited.insert(start);
+    for (int i=0;i<edges[start].size();i++){
+        int adjacent = edges[start][i];
+        if (visited.count(adjacent)==0){//if not visited
+            dfs(edges,adjacent,visited,finishedvertices);
+        }
+    }
+    finishedvertices.push(start);
+    
+}
+// for reverse direction
+void dfs2 (vector<int>*edges,int start,unordered_set<int>* component,unordered_set<int> &visited){
+    visited.insert(start);
+    component->insert(start);
+     for (int i=0;i<edges[start].size();i++){
+        int adjacent = edges[start][i];
+        if (visited.count(adjacent)==0){
+            dfs2(edges,adjacent,component,visited);
+        }
+    }
+}
+unordered_set<unordered_set<int>*>* scc(vector<int>*edges,vector<int>*edgesT,int n){
+    unordered_set<int>visited;
+    stack <int> finishedvertices;
+    for (int i=0;i<n;i++){
+        if (visited.count(i)==0){
+            dfs(edges,i,visited,finishedvertices);
+        }
+    }
+    unordered_set<unordered_set<int>*>* rslt=new unordered_set<unordered_set<int>*>();// to store the output
+    visited.clear();
+    while (finishedvertices.size()!=0){
+        int ele=finishedvertices.top();
+        finishedvertices.pop();
+        if (visited.count(ele)!=0){
+            continue;
+        }
+        unordered_set<int>*component= new unordered_set<int>();
+    dfs2(edgesT,ele,component,visited);
+    rslt->insert(component);
+    
+    }
+    return rslt;
+    
+}
+int main() {
+	int n;cin>>n;
+	vector<int>*edges = new vector<int>[n];
+	vector<int> *edgesT= new vector<int>[n];
+	int e;cin>>e;
+	for (int i=0;i<e;i++){
+	    int v1,v2;cin>>v1>>v2;
+	    edges[v1-1].push_back(v2-1);
+	    edgesT[v2-1].push_back(v1-1);
+	}
+	 unordered_set<unordered_set<int>*>* component=scc(edges,edgesT,n);
+	 unordered_set<unordered_set<int>*>::iterator it=component->begin();
+	 while (it!=component->end()){
+	     unordered_set<int>* component=*it;
+	     unordered_set<int>::iterator it2=component->begin();
+	     while (it2!=component->end()){
+	         cout<<*it2+1<<" ";
+	         it2++;
+	     }
+	     cout<<endl;
+	     delete component;
+	     it++;
+	     
+	 }
+	 delete component;
+	 delete[]edges;
+	 delete[]edgesT;
+}

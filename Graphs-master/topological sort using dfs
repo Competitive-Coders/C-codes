@@ -1,0 +1,82 @@
+#include<bits/stdc++.h>
+using namespace std;
+template<typename T>
+class graph
+{
+    map <T,list<T> >adjlist;
+    public:
+    graph()
+    {
+        
+    }   
+    void addvertex(int i, int f,bool bidr=true)
+    {
+        adjlist[i].push_back(f);
+        if (bidr)
+        adjlist[f].push_back(i);    
+    } 
+    void print ()
+    {
+        for (T key:adjlist)
+        {
+            cout<<key.first<<" ";
+            for (auto neighbour:key.second)
+            {
+            cout<<neighbour<<" ";
+            
+            }
+            cout<<endl;
+        }
+    }
+
+    void DfsTraverse(T node,map <T, bool> &visited,list<T> &l)
+    {
+       visited[node]=true;
+        for (T neighbour:adjlist[node])
+        {
+           if (!visited[neighbour])
+           {
+              DfsTraverse (neighbour,visited,l); 
+           }
+        }
+        l.push_front (node);
+    }    
+    void topological ()
+    {
+        list<T> l;
+        map <T, bool> visited;
+       
+        for (auto i:adjlist)
+        {
+            T node=i.first;
+         
+                if (!visited[node])
+                {
+                  DfsTraverse (node,visited,l);
+                    
+                }
+            
+        }  
+        for (T nodes:l)
+        {
+            cout<<"elements are "<<nodes;
+            
+            cout<<endl;
+        }
+        
+    }        
+};
+int main ()
+{
+    graph <int> g;
+    g.addvertex(0,2,false);
+    g.addvertex(0,3,false);
+    g.addvertex(1,2,false);
+    g.addvertex(2,5,false);
+    g.addvertex(3,6,false);
+    g.addvertex(6,7,false);
+    g.addvertex(4,7,false);
+    g.addvertex(5,7,false);
+    g.addvertex(2,4,false);
+    g.topological ();
+}

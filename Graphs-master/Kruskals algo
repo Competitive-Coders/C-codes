@@ -1,0 +1,61 @@
+//time complexity (ElogE)+(E*V)
+#include <bits/stdc++.h>
+using namespace std;
+class edges{
+    public:
+    int srs,dest,wt;
+    
+};
+int getparent(int v,int* parent){
+    if (parent[v]==v)return v;
+    else{
+        return getparent(parent[v],parent);
+    }
+}
+bool compare(edges v1,edges v2){
+    return v1.wt<v2.wt;
+}
+edges* kruskal(edges* edge, int v,int e){
+    // sort the edges in ascending order in terms of wt
+    sort(edge,edge+e,compare);
+    int* parent =new int [v];//parent array for union find algo
+    edges* rslt=new edges[v-1];
+    for (int i=0;i<v;i++){
+        parent[i]=i;//initailly parent of vertex is itself
+    }
+    int i=0,count=0;
+    while (count<v-1){// total edges must be vertex-1
+        edges curr = edge[i];
+        int srsp = getparent (curr.srs,parent);//srs parent
+        int destp= getparent(curr.dest,parent);// dest parent
+        if (srsp!=destp){// souce parent and dest parent must not be same for acyclic graph
+            rslt[count]=curr;
+            count++;
+            parent[srsp]=destp;//after connecting update dest parent as a source parent
+        }
+        i++;
+    }
+    return rslt;
+}
+int main() {
+    int v,e;cin>>v>>e;
+	edges *edge=new edges[e];
+	for (int i=0;i<e;i++){
+	    int s,d,w;
+	    cin>>s>>d>>w;
+	    edge[i].srs=s;
+	    edge[i].dest=d;
+	    edge[i].wt=w;
+	    
+	}
+	edges* rslt = kruskal (edge,v,e);// output array
+	for (int i=0;i<v-1;i++){
+	    if (rslt[i].srs<rslt[i].dest){
+	        cout<<rslt[i].srs<<" "<<rslt[i].dest<<" "<<rslt[i].wt<<endl;
+	    }
+	    else{
+	        cout<<rslt[i].dest<<" "<<rslt[i].srs<<" "<<rslt[i].wt<<endl;
+	    }
+	}
+	return 0;
+}

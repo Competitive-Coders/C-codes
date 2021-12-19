@@ -1,0 +1,91 @@
+
+#include<bits/stdc++.h>
+using namespace std;
+
+template<typename T>
+class graph
+{
+
+    map <T,list<T> >adjlist;
+    public:
+    graph()
+    {
+
+    }
+
+    void addvertex(T i,T f,bool bidr=true)
+     {
+        adjlist[i].push_back(f);
+        if (bidr)
+        adjlist [f].push_back(i);
+    }
+    void print ()
+    {
+        //iterate over maps
+        for (auto i:adjlist)
+        {
+            cout<<i.first<<"->";
+        for (T entry:i.second)
+        {
+            cout<<entry<<" ";
+        }
+            cout<<endl;
+             }
+    }
+  
+          
+        
+          void shortest_path (T strt)
+    {
+        queue <T> q1;
+        map <T ,int > distance;
+        map <T,T> parent;
+        for (auto i:adjlist)
+        {
+            distance [i.first]=INT_MAX;
+        }
+        q1.push (strt);
+        distance [strt]=0;
+        parent [strt]=strt;
+        while (!q1.empty())
+        {
+            T key = q1.front();
+            //cout<<key;
+             q1.pop();
+
+        for (T neighbour:adjlist[key])
+        {
+            if (distance[neighbour]==INT_MAX)
+            {
+             q1.push (neighbour);
+             distance[neighbour]=1+distance[key];
+             parent[neighbour]=key;
+            }
+
+        }
+        }
+        for (auto i:adjlist)
+        {
+            T key=i.first;
+            cout<<"distance of "<<key<<" from "<<strt<<" is "<<distance[key]<<endl;
+
+        }
+
+    }
+};
+int main ()
+{
+    graph<string> g;
+    g.addvertex ("putin","modi",true);
+    g.addvertex ("putin","trump",false);
+    g.addvertex ("putin","pope",false);
+    g.addvertex ("prabhu","modi",false);
+    g.addvertex ("modi","trump",true);
+    g.addvertex ("modi","yogi",true);
+    g.addvertex ("yogi","prabhu",false);
+   // g.addvertex ("yogi","modi",true);
+  //  g.addvertex ("trump","modi",true);
+   // g.bfs ("modi");
+   // g.print ();
+   g.shortest_path("modi");
+}

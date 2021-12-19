@@ -1,0 +1,85 @@
+#include<bits/stdc++.h>
+using namespace std;
+template<typename T>
+class graph
+{
+    map <T,list<T> >adjlist;
+    public:
+    graph ()
+    {
+
+    }
+     void addvertex(int i, int f,bool bidr=true)
+    {
+        adjlist[i].push_back(f);
+        if (bidr)
+        adjlist[f].push_back(i);
+    }
+    void print ()
+    {
+        for (T key:adjlist)
+        {
+            cout<<key.first<<" ";
+            for (auto neighbour:key.second)
+            {
+            cout<<neighbour<<" ";
+
+            }
+            cout<<endl;
+        }
+    }
+    bool iscyclic (T node,map <T,bool> &visited,map <T,bool> &stacks)
+    {
+        visited[node]=true;
+        stacks [node]=true;
+
+        for (T neighbour:adjlist[node])
+        {
+            if (!visited[neighbour]&& iscyclic(neighbour,visited,stacks)||stacks[neighbour]==true )
+            {
+                return true;
+            }
+
+        }
+
+
+        stacks[node]=false;
+        return false;
+    }
+    bool detection ()
+    {
+        map <T,bool> visited;
+        map <T,bool> stacks;
+         for (auto i:adjlist)
+        {
+            T node=i.first;
+            if (!visited[node])
+            {
+                bool cycle=iscyclic(node,visited,stacks);
+                if (cycle)
+                return true;
+            }
+
+        }
+        return false;
+    }
+};
+int main ()
+{
+    graph <int> g;
+    g.addvertex(0,1,false);
+    g.addvertex(0,2,false);
+      g.addvertex(2,3,false);
+      g.addvertex(2,4,false);
+      g.addvertex(3,0,false);
+      g.addvertex(4,5,false);
+      g.addvertex(1,5,false);
+    if (g.detection())
+    {
+        cout<<"cycle is present";
+    }
+    else
+    cout<<"cycle is not present";
+    return 0;
+
+}

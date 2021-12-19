@@ -1,0 +1,43 @@
+#include <bits/stdc++.h>
+using namespace std;
+vector <int> arr[100000];
+vector <int> rslt;
+int indegree[100000];//array to store the no of nodes connected to that node
+queue <int> q;
+int visited[100000];
+//kahn's algo for topological sort
+void kahn(int n){
+    for (int i=1;i<=n;i++)
+        if (indegree[i]==0)
+            q.push(i);
+          
+    while (!q.empty()){
+        int cur = q.front();
+        rslt.push_back(cur);
+        q.pop();
+        for (int node:arr[cur]){
+            indegree[node]--;
+            if (indegree[node]==0)q.push(node);
+        }
+    }
+    
+    for (int node:rslt){
+        cout<<node<<" ";
+    }
+    
+}
+
+int main() {
+	
+	int nodes,edges;cin>>nodes>>edges;
+	while (edges--){
+	    int x,y;cin>>x>>y;
+	    arr[x].push_back(y);
+	 //   arr[y].push_back(x);
+	 indegree[y]++;
+	    
+	}
+	kahn(nodes);
+	
+	return 0;
+}

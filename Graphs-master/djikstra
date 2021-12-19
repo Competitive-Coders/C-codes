@@ -1,0 +1,86 @@
+#include<bits/stdc++.h>
+using namespace std;
+template<typename T>
+class graph
+{
+    unordered_map < T,list<pair<T,int> > > lists;
+public:
+    graph ()
+    {
+
+    }
+    void addvertex (T i,T f,int dist,bool bidr=true)
+    {
+        lists[i].push_back(make_pair(f,dist));
+        if (bidr)
+        {
+        lists[f].push_back(make_pair(i,dist));
+
+        }
+    }
+    void print()
+    {
+        for (auto i:lists)
+         {   cout<<i.first<<"->";
+        for (T entry:i.second)
+        {
+            cout<<entry.first<<","<<entry.second<<" ";
+        }
+
+        cout<<endl;
+         }
+    }
+void dijktras (T strt)
+{
+    
+    unordered_map <T,int> distance;
+    
+    for (auto i:lists)
+    {
+      distance[i.first]=INT_MAX;
+    }
+    set <pair <int,T> > s;
+    distance[strt]=0;
+    s.insert(make_pair(0,strt));
+    while (!s.empty())
+    {
+      auto p=*(s.begin());
+      
+          T node=p.second;
+          int dist=p.first;
+          s.erase(s.begin());
+          for (auto child:lists[node])
+          {
+              if (dist+child.second<distance[child.first])
+              {
+                  T dest=child.first;
+                  auto f=s.find (make_pair(distance[dest],dest));
+                  if (f!=s.end()){
+                    s.erase(f);
+                  }
+              distance[dest]=dist+child.second;
+                s.insert(make_pair(distance[dest],dest));
+                  
+              }
+              
+          }
+          }
+          //print
+          for (auto d:distance)
+          {
+              cout<<d.first<<" is located at distance of "<<d.second<<" from start"<<endl;
+          }
+     
+}
+};
+int main ()
+{
+graph<int> g;
+g.addvertex(1,2,1);
+g.addvertex(1,3,4);
+g.addvertex(2,3,1);
+g.addvertex(3,4,2);
+g.addvertex(1,4,7);
+g.dijktras (1);
+return 0;
+}

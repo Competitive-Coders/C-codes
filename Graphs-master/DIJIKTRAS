@@ -1,0 +1,54 @@
+// time complexity O(n2)
+#include <bits/stdc++.h>
+using namespace std;
+int getmin (int *distance,bool *visited,int v){
+    int minvertex=-1;
+    for (int i=0;i<v;i++){
+        if (!visited[i] and (minvertex==-1 ||distance[i]<distance[minvertex])){
+            minvertex=i;
+        }
+    }
+    return minvertex;
+}
+void dijiktras (int **edges,int v,int sv){
+    bool *visited= new bool[v];
+    int *distance=new int [v];
+    for (int i=0;i<v;i++){
+        distance[i]=INT_MAX;
+    }
+    distance[sv]=0;
+    for (int i=0;i<v;i++){
+        int minvertex= getmin(distance,visited,v);
+        visited[minvertex]=true;
+        for (int j=0;j<v;j++){
+            if (edges[minvertex][j] and !visited[j]){
+                int curd=edges[minvertex][j]+distance[minvertex];
+                if (distance[j]>curd){
+                    distance[j]=curd;
+                }
+            }
+        
+        }
+    }
+    for (int i=0;i<v;i++){
+        cout<<i<<" "<<distance[i]<<endl;
+    }
+}
+    
+int main() {
+	int v,e;cin>>v>>e;
+int **edges = new int*[v];
+for (int i=0;i<v;i++){
+    edges[i]=new int [v];
+    for (int j=0;j<v;j++){
+        edges[i][j]=0;
+    }
+}
+for (int i=0;i<e;i++){
+int sn,en,wt;cin>>sn>>en>>wt;
+edges[sn][en]=wt;
+edges[en][sn]=wt;
+}
+dijiktras(edges,v,0);
+	return 0;
+}

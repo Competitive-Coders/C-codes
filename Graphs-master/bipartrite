@@ -1,0 +1,65 @@
+#include<bits/stdc++.h>
+using namespace std;
+class graph 
+{
+    int v;
+    list<int> *l;
+    public:
+    graph (int V)
+    {
+        V=v;
+        l=new list<int> [v];
+        
+    }
+    void addvertex (int i, int f, bool bidr=true )
+    {
+        l[i].push_back(f);
+        if (bidr)
+            l[f].push_back(i);
+    }
+    bool bipartite (int strt)
+    {
+        queue<int> q;
+        q.push(strt);
+        int *colour=new int [v];
+        for (int i=0;i<v;i++)
+        {
+            colour[i]=-1;
+        }
+        colour[strt]=0;
+        bool ans=true;
+        while (!q.empty()&&ans)
+        {
+            int u=q.front();
+            q.pop();
+            for (auto i:l[u])
+            {
+                if (colour[i]==-1){
+                colour[i]=1-colour[u];
+                q.push(i);
+               
+                }
+                else if (colour[i]==colour[u]){
+                    return false;
+                    }
+            }
+        }
+         return true;
+        
+    }
+};
+int main ()
+{
+     graph g (5);
+     
+     g.addvertex (0,1);
+     g.addvertex (0,2);
+    // g.addvertex (0,4);
+     g.addvertex (2,4);
+     g.addvertex (1,4);
+     if (g.bipartite(0))
+     cout<<"grahp is bipartrite";
+     else
+        cout<<"graph is not bipartrite";
+        return 0;
+}

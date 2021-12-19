@@ -1,0 +1,54 @@
+#include<iostream>
+#include<list>
+#include<map>
+using namespace std;
+
+template<typename T>
+class graph
+{
+    
+    map <T,list<T> >adjlist;
+    public:
+    graph()
+    {
+
+    }
+
+    void addvertex(T i,T f,bool bidr=true)
+    void addvertex(T i,T f,bool bidr=true)
+    {
+        adjlist[i].push_back(f);
+        if (bidr)
+        adjlist [f].push_back(i);
+    }
+    void print ()
+    {
+        //iterate over maps
+        for (auto i:adjlist)
+        {
+            cout<<i.first<<"->";
+        for (T entry:i.second)
+        {
+            cout<<entry<<" ";
+        }
+            cout<<endl;
+        }
+    }
+
+};
+int main ()
+{
+    graph<string> g;
+    g.addvertex ("putin","modi",false);
+    g.addvertex ("putin","trump",false);
+    g.addvertex ("putin","pope",false);
+    g.addvertex ("prabhu","modi",false);
+    g.addvertex ("modi","trump",true);
+    g.addvertex ("modi","yogi",true);
+    g.addvertex ("yogi","prabhu",false);
+   // g.addvertex ("yogi","modi",true);
+  //  g.addvertex ("trump","modi",true);
+    g.print ();
+    return 0;
+}
+

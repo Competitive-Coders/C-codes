@@ -1,0 +1,54 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+bool printbfs (int **edges,int v,int sv,int ev,bool *visited){
+    queue <int> q;
+    q.push(sv);
+    bool ans=false;
+    visited[sv]=true;
+    while (!q.empty()){
+        int cv= q.front();
+        q.pop();
+       // cout<<cv<<" ";
+    for (int i=0;i<v;i++){
+        if (cv==i)continue;
+        if (edges[cv][i]==1 and !visited[i]){
+            if (i==ev){
+                ans=true;
+            }
+            q.push(i);
+            visited[i]=true;
+        }
+    }
+    }
+    return ans;
+} 
+
+int main() {
+int v,e;cin>>v>>e;
+int **edges = new int*[v];
+for (int i=0;i<v;i++){
+    edges[i]=new int [v];
+    for (int j=0;j<v;j++){
+        edges[i][j]=0;
+    }
+}
+for (int i=0;i<e;i++){
+int sn,en;cin>>sn>>en;
+edges[sn][en]=1;
+edges[en][sn]=1;
+}
+int sv,ev;cin>>sv>>ev;
+bool *visited= new bool [v];
+for (int i=0;i<v;i++){
+    visited[i]=0;
+}
+
+if (printbfs (edges,v,sv,ev,visited)){
+    cout<<"true"<<endl;
+}
+else{
+    cout<<"false"<<endl;
+}
+//	return 0;
+}

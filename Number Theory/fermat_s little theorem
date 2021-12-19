@@ -1,0 +1,24 @@
+#include <bits/stdc++.h>
+#define ll long long
+using namespace std;
+ll fermat_theorem(ll base,ll power,int m){
+    ll res=1;
+    while (power){
+    if (power%2!=0){
+        power-=1;
+        res=(res*base)%m;}
+    else
+    {
+        power/=2;
+        base=(base*base)%m;
+    }
+    }
+    return res;
+
+}
+int main() {
+    ll base,m;
+    cin>>base;cin>>m;
+	cout<<"base^-1 = "<<fermat_theorem(base,m-2,m)<<endl;
+	return 0;
+}

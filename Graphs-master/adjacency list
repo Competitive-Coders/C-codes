@@ -1,0 +1,54 @@
+#include<iostream>
+#include<vector>
+#include<list>
+using namespace std;
+
+ class graph
+ {
+     int v;
+     list<int>*l;
+public:
+     graph (int V)
+     {
+     v=V;
+     l=new list <int> [v];
+
+     }
+
+ void addvertex (int i,int f)
+ {
+     l[i].push_back(f);
+
+         l[f].push_back(i);
+
+ }
+
+ void print ()
+ {
+     for (int j=0;j<v;j++)
+     {
+         cout<<j<<"->";
+         for (int it: l[j])
+         {
+             cout<<it<<",";
+            // cout<<"shivi";
+         }
+         cout<<endl;
+     }
+}
+ };
+ int main ()
+ {
+     graph g(5);
+     g.addvertex (0,1);
+     g.addvertex (0,4);
+     g.addvertex (1,2);
+     g.addvertex (1,3);
+     g.addvertex (1,4);
+     g.addvertex (2,3);
+     g.addvertex (4,3);
+
+     g.print ();
+return 0;
+ }
+

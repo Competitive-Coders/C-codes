@@ -1,0 +1,71 @@
+#include<iostream>
+#include<vector>
+#include<list>
+using namespace std;
+
+ class graph
+ {
+     int v;
+     list<int>*l;
+public:
+     graph (int V)
+     {
+     v=V;
+     l=new list <int> [v];
+
+     }
+
+ void addvertex (int i,int f)
+ {
+     l[i].push_back(f);
+
+         l[f].push_back(i);
+
+ }
+
+void hlpr (int i,bool visited[],int &country_connected)
+{
+    visited[i]=true;
+    country_connected++;
+    for (auto neighbour:l[i])
+    {
+        if (!visited[neighbour])
+        {
+            hlpr (neighbour,visited,country_connected);
+        }
+    }
+}
+int moon ()
+{
+    bool *visited= new bool[v];
+    int n=v;
+
+    for (int i=0;i<v;i++)
+    {
+        visited[i]=false;
+    }
+     int total = (n)*(n-1)/2;
+    for (int i=0;i<v;i++)
+    {
+
+        if (visited[i]==false)
+        {
+            int counts=0;
+            hlpr (i,visited,counts);
+
+            cout<<"no.of country "<<counts<<endl;
+            total-= (counts)*(counts-1)/2;
+        }
+
+    }
+    return total;
+}
+ };
+ int main ()
+ {
+     graph g (5);
+     g.addvertex (0,4);
+     g.addvertex (0,1);
+     g.addvertex (2,3);
+     cout<<g.moon ();
+ }
